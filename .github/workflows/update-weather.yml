@@ -1,0 +1,43 @@
+name: ☁️ Auto-Update Weather Widget
+
+on:
+  schedule:
+    # Runs once every hour, at the 15-minute mark (:15)
+    # The cron job runs in UTC, so adjust if needed, but the Python script
+    # handles the timezone conversion (America/New_York) correctly.
+    - cron: '15 * * * *'
+  workflow_dispatch: # Allows manual triggering from the Actions tab
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          # The requests library is needed for the API call
+          pip install requests
+
+      - name: Run Weather Update Script
+        run: python update_weather.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add README.md
+          
+          # Check if there are changes to avoid unnecessary commits
+          if git diff --staged --quiet; then
+            echo "No weather changes detected. Skipping commit."
+          else
+            git commit -m "Automated: ☁️ Update Boston weather widget"
+            git push
+          fi
