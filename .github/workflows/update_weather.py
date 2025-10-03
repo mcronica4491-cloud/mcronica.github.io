@@ -6,7 +6,7 @@ import re
 
 # --- Configuration ---
 # API Endpoint URL (The one you provided)
-API_URL = "https://api.open-meteo.com/v1/forecast?latitude=42.3584&longitude=-71.0598&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch&timezone=America%2FNew_York"
+API_URL = "https://api.open-meteo.com/v1/forecast?latitude=42.3584&longitude=-71.0598&hourly=temperature_2m&forecast_days=3&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch"
 README_FILE = "README.md"
 START_TAG = ""
 END_TAG = ""
