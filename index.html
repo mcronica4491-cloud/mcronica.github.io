@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CLOUD HONOR</title>
+
+<!-- Fantasy fonts (safe to remove if you want fully offline) -->
+<link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Crimson+Text:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#e5e7eb;
+    --ink-dim:#cbd5e1;
+    --accent:#93c5fd;
+    --accent-2:#7dd3fc;
+    --gold:#facc15;
+    --bg-1:#050914;
+    --bg-2:#0b1223;
+    --bg-3:#121a2e;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+    --ring:0 0 0 2px rgba(125,211,252,.25),0 0 24px rgba(125,211,252,.25) inset;
+  }
+
+  /* Reset-ish */
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:radial-gradient(1200px 700px at 20% 0%,var(--bg-2),var(--bg-1)) fixed;color:var(--ink)}
+  body{font-family:"Crimson Text", ui-serif, Georgia, serif; line-height:1.6}
+
+  /* Subtle starfield */
+  .sky{position:fixed inset:0; pointer-events:none; z-index:-1}
+  .stars, .stars:before, .stars:after{
+    content:""; position:fixed; inset:0; background:
+      radial-gradient(1px 1px at 10% 20%, #fff5 60%, transparent),
+      radial-gradient(1px 1px at 80% 30%, #fff5 60%, transparent),
+      radial-gradient(1px 1px at 50% 80%, #fff5 60%, transparent),
+      radial-gradient(1px 1px at 20% 60%, #fff5 60%, transparent),
+      radial-gradient(1px 1px at 70% 70%, #fff5 60%, transparent);
+    animation: drift 60s linear infinite;
+  }
+  .stars:before{animation-duration:90s; opacity:.7}
+  .stars:after{animation-duration:120s; opacity:.4}
+  @keyframes drift { from{transform:translateY(0)} to{transform:translateY(-200px)} }
+
+  /* Layout */
+  .wrap{max-width:1000px; margin:auto; padding:24px}
+  header{padding:64px 16px 32px; text-align:center; position:relative}
+  header .crest{
+    width:120px; height:120px; margin:0 auto 16px; border-radius:999px;
+    background: conic-gradient(from 200deg, #1f2a44, #0a0f1e);
+    box-shadow: var(--shadow), 0 0 0 2px #1f2a44 inset, 0 0 60px rgba(147,197,253,.15);
+    position:relative; overflow:hidden;
+  }
+  .crest:after{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(50px 50px at 50% 50%, rgba(125,211,252,.35), transparent 60%),
+      repeating-conic-gradient(from 0deg, transparent 0 15deg, rgba(125,211,252,.08) 15deg 30deg);
+    mix-blend-mode: screen; animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50%{transform:scale(1.03)} }
+
+  h1{
+    font-family:"Uncial Antiqua","Crimson Text",serif;
+    letter-spacing:.08em; font-size: clamp(32px, 5vw, 56px);
+    margin:8px 0 6px; color:var(--accent);
+    text-shadow: 0 0 18px rgba(147,197,253,.25);
+  }
+  .subtitle{color:var(--ink-dim); font-style:italic}
+
+  nav{
+    margin:28px auto 8px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center
+  }
+  .tab{
+    color:var(--accent-2); border:1px solid #1f3357; padding:8px 14px; border-radius:999px;
+    text-decoration:none; background:linear-gradient(180deg,#0b152a,#0a1222);
+    box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .tab:hover{ transform:translateY(-2px); border-color:#2a4b7b; box-shadow:var(--shadow), 0 0 0 2px rgba(125,211,252,.15) inset }
+
+  /* Cards */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:18px}
+  .card{
+    background:linear-gradient(180deg,var(--bg-3),#0b1426);
+    border:1px solid #1c2b4a; border-radius:18px; padding:18px; box-shadow:var(--shadow);
+    position:relative; overflow:hidden;
+  }
+  .card:before{
+    content:""; position:absolute; inset:-1px; border-radius:18px;
+    background: radial-gradient(600px 200px at 0% 0%, rgba(125,211,252,.08), transparent 60%);
+    pointer-events:none;
+  }
+  .card h3{ margin:0 0 8px; font-family:"Uncial Antiqua","Crimson Text",serif; color:var(--accent)}
+  .card p{ margin:0 0 10px; color:var(--ink-dim) }
+  .rune{font-size:28px; line-height:1}
+
+  /* Oath checklist */
+  .oath{ list-style:none; padding:0; margin:0 }
+  .oath li{
+    display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:12px;
+    border:1px solid #1a2a48; background:linear-gradient(180deg,#0a1326,#0b1426);
+    margin-bottom:8px; transition: box-shadow .2s ease, border-color .2s ease;
+  }
+  .oath li:hover{ box-shadow: var(--ring); border-color:#2a4b7b }
+  input[type="checkbox"]{ margin-top:3px; accent-color:#7dd3fc; width:18px; height:18px }
+  .oath small{ color:#9fb7d6 }
+
+  /* Collapsible lore */
+  details{
+    border:1px solid #1c2b4a; border-radius:14px; padding:14px 16px; background:linear-gradient(180deg,#0a1222,#0b1426);
+    transition: box-shadow .2s ease, border-color .2s ease; margin:10px 0;
+  }
+  details:hover{ box-shadow: var(--ring); border-color:#2a4b7b }
+  summary{ cursor:pointer; font-weight:700; color:var(--accent) }
+
+  /* Map */
+  .map{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    white-space:pre; background:#0a1020; border:1px dashed #233759; color:#a5b4fc;
+    padding:14px; border-radius:14px; overflow:auto;
+  }
+
+  /* Footer */
+  footer{ text-align:center; color:#9fb7d6; padding:36px 12px 60px }
+  .sig{ color:var(--accent-2) }
+
+  /* Small lightning divider */
+  .divider{
+    margin:30px auto 18px; height:2px; width:min(680px,92%); position:relative; background:linear-gradient(90deg,transparent, #2a4b7b 40%, #93c5fd, #2a4b7b 60%, transparent);
+    box-shadow:0 0 20px rgba(147,197,253,.25);
+  }
+</style>
+</head>
+<body>
+  <div class="sky"><div class="stars"></div></div>
+
+  <header class="wrap" id="top">
+    <div class="crest" aria-hidden="true"></div>
+    <h1>☁️ CLOUD HONOR</h1>
+    <div class="subtitle">“Guard the gateways. Steady the latencies. Let no shadow pass the edge.”</div>
+
+    <nav aria-label="Realm navigation">
+      <a class="tab" href="#oath">The Oath</a>
+      <a class="tab" href="#relics">Relics</a>
+      <a class="tab" href="#map">Map</a>
+      <a class="tab" href="#lore">Lore</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+
+    <section id="oath" aria-labelledby="oath-title">
+      <h2 id="oath-title" style="font-family:'Uncial Antiqua','Crimson Text',serif;color:var(--gold); letter-spacing:.06em;">The Oath of the Wardens</h2>
+      <p class="subtitle">Mark your vows; the sky remembers.</p>
+      <ul class="oath">
+        <li><input type="checkbox" id="v1"><label for="v1"><b>Cache true</b> — that roads run swift. <br><small>Edge before origin; cold starts made warm.</small></label></li>
+        <li><input type="checkbox" id="v2"><label for="v2"><b>Names honest</b> — that seekers are not deceived. <br><small>DNS runes bound and resolute.</small></label></li>
+        <li><input type="checkbox" id="v3"><label for="v3"><b>Tunnels sealed</b> — that private halls stay private. <br><small>The Gray Thread hums; the gate stays shut.</small></label></li>
+        <li><input type="checkbox" id="v4"><label for="v4"><b>Gates warded</b> — that goblins turn aside. <br><small>Rules etched in patient stone.</small></label></li>
+      </ul>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <section id="relics" aria-labelledby="relics-title">
+      <h2 id="relics-title" style="font-family:'Uncial Antiqua','Crimson Text',serif;color:var(--gold); letter-spacing:.06em;">Relics of the Order</h2>
+      <div class="grid" role="list">
+        <article class="card" role="listitem">
+          <div class="rune" aria-hidden="true">📜</div>
+          <h3>Edge Scrolls</h3>
+          <p>Whispers that run where servers dare not stand. The Keep answers in the blink between thunder and echo.</p>
+          <details><summary>Open the Scroll</summary><pre class="map">GET /whisper → 200
+{ "banner": "⚡ Cloud Honor watches the way." }</pre></details>
+        </article>
+
+        <article class="card" role="listitem">
+          <div class="rune" aria-hidden="true">🪄</div>
+          <h3>Runes of Binding</h3>
+          <p>Names given, paths made true. Cloak the sigil to walk the storm and be seen by none but kin.</p>
+          <details><summary>See the Runes</summary><pre class="map">@ → A / AAAA / CNAME
+proxied: 🟧  // wears the storm-cloak</pre></details>
+        </article>
+
+        <article class="card" role="listitem">
+          <div class="rune" aria-hidden="true">🌀</div>
+          <h3>Veil Road</h3>
+          <p>The Gray Thread that binds a homestead to the world without opening the gate. Walk unseen, arrive unscathed.</p>
+          <details><summary>Step onto the Veil</summary><pre class="map">cloudflared tunnel run honor-keep
+→ https://keep.your-realm.tld → http://localhost:8787</pre></details>
+        </article>
+
+        <article class="card" role="listitem">
+          <div class="rune" aria-hidden="true">🛡️</div>
+          <h3>Warding Lattice</h3>
+          <p>Simple incantations etched in stone to turn back the goblins at dusk.</p>
+          <details><summary>Read the Lattice</summary><pre class="map">if ua ~ "rot" → block
+if path = /forbidden/stone → allow: kin</pre></details>
+        </article>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <section id="map" aria-labelledby="map-title">
+      <h2 id="map-title" style="font-family:'Uncial Antiqua','Crimson Text',serif;color:var(--gold); letter-spacing:.06em;">Map of the Realm</h2>
+<pre class="map" aria-label="ASCII map">
+            ┌────────────── Skyline (Global Edge) ──────────────┐
+            │                                                    │
+   North    │   ⚡ Gate of Names (DNS)   ⚔ Warding Lattice (WAF) │
+    ^       │          │                     │                  │
+    |       │          ▼                     ▼                  │
+    |       │   🌀 Cachefields ——→ 🛡️ Honor Keep (Workers)       │
+ West←—→East│          │                     │                  │
+    |       │          ▼                     ▼                  │
+    |       │     🌫️ Veil Road (Tunnels) → 🏡 Homestead          │
+   South    │                                                    │
+            └────────────────────────────────────────────────────┘
+</pre>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <section id="lore" aria-labelledby="lore-title">
+      <h2 id="lore-title" style="font-family:'Uncial Antiqua','Crimson Text',serif;color:var(--gold); letter-spacing:.06em;">Lore & Omens</h2>
+      <details open>
+        <summary>Annals of the Seventh Surge</summary>
+        <p>On the seventh surge, when the sky bore sigils of lightning, the Wardens took their vigil:
+        to shield the realms, to speed the caravans of packets, and to keep watch where the wild nets howl.</p>
+        <ul>
+          <li>The crawler legion turned at the Lattice. The fields held.</li>
+          <li>The Veil hummed; the Keep sang back; no hinges scraped.</li>
+          <li>Travelers found the Gate of Names true and swift.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Quest Hooks</summary>
+        <p>Seek these proofs of craft:</p>
+        <ul>
+          <li>Carve a sigil (subdomain) and cloak it in storm.</li>
+          <li>Warm the Cachefields with a static banner.</li>
+          <li>Lay a gentle rule upon the Lattice to spare the kin.</li>
+        </ul>
+      </details>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="sig">“Between the user and the origin lies the long road. We are that road.”</p>
+    <p>— The Wardens of CLOUD HONOR</p>
+    <p><a class="tab" href="#top">Back to the Crest ↑</a></p>
+  </footer>
+</body>
+</html>
