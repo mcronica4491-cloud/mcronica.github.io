@@ -1,6 +1,6 @@
 name: "☁️ Auto-Update Weather Widget"
 
-on:
+#on:
   schedule:
     - cron: "15 * * * *"   # hourly at :15 (UTC)
   workflow_dispatch:
